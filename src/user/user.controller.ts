@@ -1,6 +1,7 @@
-import { CreateUserDto } from './dto/createUserDto.dto';
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 
+import { ValidationExceptionFilter } from '../filters/validation-exception.filter';
+import { CreateUserDto } from './dto/createUserDto.dto';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -8,9 +9,10 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/register')
+  @UseFilters(new ValidationExceptionFilter())
   async createUser(@Body() createUserDto: CreateUserDto) {
-    await this.userService.createUser(createUserDto);
+    const result = await this.userService.createUser(createUserDto);
 
-    return 'User has been created';
+    return result;
   }
 }

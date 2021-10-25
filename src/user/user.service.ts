@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -17,6 +17,20 @@ export class UserService {
 
     createdUser.password = hashedPassword;
 
-    return createdUser.save();
+    try {
+      const savedUser = await createdUser.save();
+
+      return savedUser;
+    } catch (error) {
+      const errors = Object.values(error.errors).map((errorInfo: any) => ({
+        field: errorInfo.path,
+        message:
+          errorInfo.kind === 'unique'
+            ? `${errorInfo.path} must be unique`
+            : errorInfo.properties.message,
+      }));
+
+      throw new BadRequestException(errors);
+    }
   }
 }
