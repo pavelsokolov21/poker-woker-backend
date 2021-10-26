@@ -6,6 +6,7 @@ import { UserService } from './user.service';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 import { NotFoundExceptionFilter } from '../../filters/not-found-exception.filter';
 import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
+import { InternalServerExceptionFilter } from '../../filters/internal-server-exception.filter';
 
 @Controller('user')
 export class UserController {
@@ -20,7 +21,11 @@ export class UserController {
   }
 
   @Post('/login')
-  @UseFilters(new NotFoundExceptionFilter(), new ValidationExceptionFilter())
+  @UseFilters(
+    new NotFoundExceptionFilter(),
+    new ValidationExceptionFilter(),
+    new InternalServerExceptionFilter(),
+  )
   async loginUser(@Body(new ValidationPipe()) loginUserDto: LoginUserDto) {
     await this.userService.loginUser(loginUserDto);
 

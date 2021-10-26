@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -46,6 +47,19 @@ export class UserService {
 
     if (!user) {
       throw new NotFoundException('User with this email does not exist');
+    }
+
+    try {
+      const isValid = await bcrypt.compare(
+        loginUserDto.password,
+        user.password,
+      );
+
+      if (!isValid) {
+        throw new BadRequestException();
+      }
+    } catch (error) {
+      throw new InternalServerErrorException();
     }
   }
 }

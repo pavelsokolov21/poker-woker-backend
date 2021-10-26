@@ -2,15 +2,15 @@ import {
   ArgumentsHost,
   Catch,
   ExceptionFilter,
-  NotFoundException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Response } from 'express';
 
 import { ExceptionResponse } from '../interfaces/exception-response.interface';
 
-@Catch(NotFoundException)
-export class NotFoundExceptionFilter implements ExceptionFilter {
-  catch(exception: NotFoundException, host: ArgumentsHost) {
+@Catch(InternalServerErrorException)
+export class InternalServerExceptionFilter implements ExceptionFilter {
+  catch(exception: InternalServerErrorException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
