@@ -20,8 +20,8 @@ export class UserController {
   }
 
   @Post('/login')
-  @UseFilters(new NotFoundExceptionFilter())
-  async loginUser(@Body() loginUserDto: LoginUserDto) {
+  @UseFilters(new NotFoundExceptionFilter(), new ValidationExceptionFilter())
+  async loginUser(@Body(new ValidationPipe()) loginUserDto: LoginUserDto) {
     await this.userService.loginUser(loginUserDto);
 
     return 'Byak';
