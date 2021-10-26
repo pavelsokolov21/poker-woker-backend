@@ -1,10 +1,4 @@
-import {
-  IsEmail,
-  IsString,
-  Matches,
-  MaxLength,
-  MinLength,
-} from 'class-validator';
+import { IsEmail, IsString, Matches } from 'class-validator';
 
 import { Match } from '../../../match.decorator';
 
@@ -21,9 +15,4 @@ export class CreateUserDto {
   @IsString()
   @Match('password', { message: 'Password mismatch' })
   passwordConfirm: string;
-
-  @IsString()
-  @MinLength(4)
-  @MaxLength(20)
-  nickname: string;
 }
