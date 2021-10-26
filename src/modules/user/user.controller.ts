@@ -1,9 +1,11 @@
 import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 
-import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
 import { CreateUserDto } from './dto/createUserDto.dto';
+import { LoginUserDto } from './dto/loginUserDto.dto';
 import { UserService } from './user.service';
 import { ValidationPipe } from '../../pipes/validation.pipe';
+import { NotFoundExceptionFilter } from '../../filters/not-found-exception.filter';
+import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
 
 @Controller('user')
 export class UserController {
@@ -15,5 +17,13 @@ export class UserController {
     const result = await this.userService.createUser(createUserDto);
 
     return result;
+  }
+
+  @Post('/login')
+  @UseFilters(new NotFoundExceptionFilter())
+  async loginUser(@Body() loginUserDto: LoginUserDto) {
+    await this.userService.loginUser(loginUserDto);
+
+    return 'Byak';
   }
 }
