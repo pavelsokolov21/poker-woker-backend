@@ -6,7 +6,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { Match } from './../../match.decorator';
+import { Match } from '../../../match.decorator';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Invalid email address' })

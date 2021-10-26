@@ -1,9 +1,9 @@
 import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 
-import { ValidationExceptionFilter } from '../filters/validation-exception.filter';
+import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
 import { CreateUserDto } from './dto/createUserDto.dto';
 import { UserService } from './user.service';
-import { ValidationPipe } from '../pipes/validation.pipe';
+import { ValidationPipe } from '../../pipes/validation.pipe';
 
 @Controller('user')
 export class UserController {
