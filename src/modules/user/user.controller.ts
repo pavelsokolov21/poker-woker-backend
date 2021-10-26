@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseFilters } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpStatus,
+  Post,
+  UnauthorizedException,
+  UseFilters,
+} from '@nestjs/common';
 
 import { CreateUserDto } from './dto/createUserDto.dto';
 import { LoginUserDto } from './dto/loginUserDto.dto';
@@ -27,8 +34,15 @@ export class UserController {
     new InternalServerExceptionFilter(),
   )
   async loginUser(@Body(new ValidationPipe()) loginUserDto: LoginUserDto) {
-    await this.userService.loginUser(loginUserDto);
+    const user = await this.userService.loginUser(loginUserDto);
 
-    return 'Byak';
+    if (!user) {
+      throw new UnauthorizedException({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        error: 'Password missmatch',
+      });
+    }
+
+    return user;
   }
 }

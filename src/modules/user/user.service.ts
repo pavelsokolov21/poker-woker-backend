@@ -56,8 +56,10 @@ export class UserService {
       );
 
       if (!isValid) {
-        throw new BadRequestException();
+        return null;
       }
+
+      return user;
     } catch (error) {
       throw new InternalServerErrorException();
     }
