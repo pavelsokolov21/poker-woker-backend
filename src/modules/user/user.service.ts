@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -61,7 +62,10 @@ export class UserService {
 
       return user;
     } catch (error) {
-      throw new InternalServerErrorException();
+      throw new InternalServerErrorException({
+        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+        error: 'Internal Server Error',
+      });
     }
   }
 }

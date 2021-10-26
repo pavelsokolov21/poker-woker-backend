@@ -11,9 +11,7 @@ import { CreateUserDto } from './dto/createUserDto.dto';
 import { LoginUserDto } from './dto/loginUserDto.dto';
 import { UserService } from './user.service';
 import { ValidationPipe } from '../../pipes/validation.pipe';
-import { NotFoundExceptionFilter } from '../../filters/not-found-exception.filter';
 import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
-import { InternalServerExceptionFilter } from '../../filters/internal-server-exception.filter';
 
 @Controller('user')
 export class UserController {
@@ -28,11 +26,7 @@ export class UserController {
   }
 
   @Post('/login')
-  @UseFilters(
-    new NotFoundExceptionFilter(),
-    new ValidationExceptionFilter(),
-    new InternalServerExceptionFilter(),
-  )
+  @UseFilters(new ValidationExceptionFilter())
   async loginUser(@Body(new ValidationPipe()) loginUserDto: LoginUserDto) {
     const user = await this.userService.loginUser(loginUserDto);
 
