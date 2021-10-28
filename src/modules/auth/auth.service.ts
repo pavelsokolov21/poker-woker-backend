@@ -1,8 +1,7 @@
 import {
   Injectable,
   NotFoundException,
-  InternalServerErrorException,
-  HttpStatus,
+  UnauthorizedException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
@@ -19,19 +18,12 @@ export class AuthService {
       throw new NotFoundException('User with this email does not exist');
     }
 
-    try {
-      const isValid = await bcrypt.compare(password, user.password);
+    const isValid = await bcrypt.compare(password, user.password);
 
-      if (!isValid) {
-        return null;
-      }
-
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: 'Internal Server Error',
-      });
+    if (!isValid) {
+      throw new UnauthorizedException();
     }
+
+    return user;
   }
 }

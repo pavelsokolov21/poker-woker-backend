@@ -1,8 +1,6 @@
 import {
   BadRequestException,
-  HttpStatus,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,7 +9,6 @@ import * as bcrypt from 'bcrypt';
 
 import { User, UserDocument } from './schemas/user.schema';
 import { CreateUserDto } from './dto/createUserDto.dto';
-import { LoginUserDto } from './dto/loginUserDto.dto';
 
 @Injectable()
 export class UserService {
