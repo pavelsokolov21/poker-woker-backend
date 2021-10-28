@@ -17,6 +17,20 @@ import { LoginUserDto } from './dto/loginUserDto.dto';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  async findUserByEmail(email: string) {
+    try {
+      const user = await this.userModel.findOne({ email }).exec();
+
+      if (!user) {
+        return null;
+      }
+
+      return user;
+    } catch (error) {
+      throw new NotFoundException('User with this email does not exist');
+    }
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto);
     const SALT_ROUNDS = 10;
