@@ -1,14 +1,6 @@
-import {
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  UnauthorizedException,
-  UseFilters,
-} from '@nestjs/common';
+import { Body, Controller, Post, UseFilters } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/createUserDto.dto';
-import { LoginUserDto } from './dto/loginUserDto.dto';
 import { UserService } from './user.service';
 import { ValidationPipe } from '../../pipes/validation.pipe';
 import { ValidationExceptionFilter } from '../../filters/validation-exception.filter';
@@ -23,20 +15,5 @@ export class UserController {
     const result = await this.userService.createUser(createUserDto);
 
     return result;
-  }
-
-  @Post('/login')
-  @UseFilters(new ValidationExceptionFilter())
-  async loginUser(@Body(new ValidationPipe()) loginUserDto: LoginUserDto) {
-    const user = await this.userService.loginUser(loginUserDto);
-
-    if (!user) {
-      throw new UnauthorizedException({
-        statusCode: HttpStatus.UNAUTHORIZED,
-        error: 'Password missmatch',
-      });
-    }
-
-    return user;
   }
 }

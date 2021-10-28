@@ -54,32 +54,4 @@ export class UserService {
       throw new BadRequestException(errors);
     }
   }
-
-  async loginUser(loginUserDto: LoginUserDto) {
-    const user = await this.userModel
-      .findOne({ email: loginUserDto.email })
-      .exec();
-
-    if (!user) {
-      throw new NotFoundException('User with this email does not exist');
-    }
-
-    try {
-      const isValid = await bcrypt.compare(
-        loginUserDto.password,
-        user.password,
-      );
-
-      if (!isValid) {
-        return null;
-      }
-
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException({
-        statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-        error: 'Internal Server Error',
-      });
-    }
-  }
 }
