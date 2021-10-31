@@ -5,6 +5,8 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { JwtTokensModule } from './modules/jwt-tokens/jwt-tokens.module';
 
 @Module({
   imports: [
@@ -13,6 +15,8 @@ import { UserModule } from './modules/user/user.module';
       `mongodb+srv://${process.env.MONGO_DB_NAME}:${process.env.MONGO_DB_PASSWORD}@main-cluster.0lcsf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
     ),
     UserModule,
+    AuthModule,
+    JwtTokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -9,6 +13,20 @@ import { CreateUserDto } from './dto/createUserDto.dto';
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+
+  async findUserByEmail(email: string) {
+    try {
+      const user = await this.userModel.findOne({ email }).exec();
+
+      if (!user) {
+        return null;
+      }
+
+      return user;
+    } catch (error) {
+      throw new NotFoundException('User with this email does not exist');
+    }
+  }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto);
