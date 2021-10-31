@@ -12,6 +12,9 @@ export class RefreshToken {
 
   @Prop()
   refreshToken: string;
+
+  @Prop()
+  expirationDate: string;
 }
 
 export const RefreshTokenSchema = SchemaFactory.createForClass(RefreshToken);

@@ -1,6 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as moment from 'moment';
 
 import * as randToken from 'rand-token';
 import {
@@ -37,9 +38,11 @@ export class JwtTokensService {
     };
     const refreshToken = this.getRefreshToken();
     try {
+      const expirationDate = moment().add(365, 'days').format('YYYY/MM/DD');
+
       await this.refreshTokenModel.findOneAndUpdate(
         { userId },
-        { refreshToken },
+        { refreshToken, expirationDate },
         options,
       );
 
