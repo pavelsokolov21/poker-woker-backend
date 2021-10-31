@@ -6,7 +6,7 @@ import {
 import * as bcrypt from 'bcrypt';
 
 import { JwtTokensService } from '../../jwt-tokens/services/jwt-tokens.service';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/services/user.service';
 import { UserDocument } from '../../user/schemas/user.schema';
 import { JwtPayload } from '../../../interfaces/jwtPayload.interface';
 
