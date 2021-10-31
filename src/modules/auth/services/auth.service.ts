@@ -37,7 +37,7 @@ export class AuthService {
 
     return {
       access_token: this.jwtTokensService.getAccessToken(payload),
-      refresh_token: '',
+      refresh_token: this.jwtTokensService.getRefreshToken(user.id),
     };
   }
 }
