@@ -1,25 +1,24 @@
 import { Request } from 'express';
 
-import { COOKIE_ACCESS_TOKEN } from '../../../../constants/cookies';
 import { cookieExtractor } from './cookieExtractor';
 
 describe('cookie extractor', () => {
   it('should return refresh token', () => {
     const req = {
       cookies: {
-        [COOKIE_ACCESS_TOKEN]: 'some-access-token',
+        'some-cookie': 'cookie value',
       },
     } as Request;
 
-    const result = cookieExtractor(req);
+    const result = cookieExtractor(req, 'some-cookie');
 
-    expect(result).toBe('some-access-token');
+    expect(result).toBe('cookie value');
   });
 
   it('should return null', () => {
     const req = {} as Request;
 
-    const result = cookieExtractor(req);
+    const result = cookieExtractor(req, 'unknown cookie');
 
     expect(result).toBeNull();
   });
