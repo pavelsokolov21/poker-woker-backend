@@ -12,7 +12,7 @@ import { JwtTokensModule } from './modules/jwt-tokens/jwt-tokens.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(
-      `mongodb+srv://${process.env.MONGO_DB_NAME}:${process.env.MONGO_DB_PASSWORD}@main-cluster.0lcsf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+      `mongodb+srv://${process.env.MONGO_DB_NAME}:${process.env.MONGO_DB_PASSWORD}@main-cluster.0lcsf.mongodb.net/main?retryWrites=true&w=majority`,
     ),
     UserModule,
     AuthModule,
