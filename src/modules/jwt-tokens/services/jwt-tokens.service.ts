@@ -1,9 +1,7 @@
 import { JwtService } from '@nestjs/jwt';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import * as moment from 'moment';
 
-import * as randToken from 'rand-token';
 import {
   RefreshToken,
   RefreshTokenDocument,
@@ -24,25 +22,24 @@ export class JwtTokensService {
     return this.jwtService.sign(payload);
   }
 
-  getRefreshToken() {
-    const refreshToken = randToken.generate(16);
-
-    return refreshToken;
+  getRefreshToken(payload: JwtPayload) {
+    return this.jwtService.sign(payload, {
+      secret: process.env.JWT_REFRESH_TOKEN_SECRET,
+      expiresIn: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
+    });
   }
 
-  async updateRefreshTokenAndReturn(userId: string) {
+  async updateRefreshTokenAndReturn(payload: JwtPayload) {
     const options = {
       upsert: true,
       new: true,
       setDefaultsOnInsert: true,
     };
-    const refreshToken = this.getRefreshToken();
+    const refreshToken = this.getRefreshToken(payload);
     try {
-      const expirationDate = moment().add(365, 'days').format('YYYY/MM/DD');
-
       await this.refreshTokenModel.findOneAndUpdate(
-        { userId },
-        { refreshToken, expirationDate },
+        { userId: payload.id },
+        { refreshToken },
         options,
       );
 
@@ -54,11 +51,13 @@ export class JwtTokensService {
 
   async generateTokens(payload: JwtPayload) {
     const accessToken = this.getAccessToken(payload);
-    const refreshToken = await this.updateRefreshTokenAndReturn(payload.id);
+    const refreshToken = await this.updateRefreshTokenAndReturn(payload);
 
     return {
       accessToken,
       refreshToken,
     };
   }
+
+  // async validateRefreshToken(token: string) {}
 }
