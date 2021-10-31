@@ -1,4 +1,11 @@
-import { Controller, Post, Request, Response, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Request,
+  Response,
+  UseGuards,
+} from '@nestjs/common';
 import { Response as ExpressResponse } from 'express';
 
 import { AuthService } from '../services/auth.service';
@@ -9,6 +16,7 @@ import {
 } from '../../../constants/cookies';
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
+import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -33,6 +41,12 @@ export class AuthController {
     });
 
     return tokens;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/is-loggedIn')
+  async getUserStatus(@Request() req) {
+    return req.user;
   }
 
   @UseGuards(JwtRefreshGuard)

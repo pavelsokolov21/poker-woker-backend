@@ -15,11 +15,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          const refreshToken = cookieExtractor(request, COOKIE_REFRESH_TOKEN);
-
-          return refreshToken;
-        },
+        (request: Request) => cookieExtractor(request, COOKIE_REFRESH_TOKEN),
       ]),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_REFRESH_TOKEN_SECRET,
