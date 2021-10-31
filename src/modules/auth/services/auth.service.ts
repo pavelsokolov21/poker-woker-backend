@@ -34,10 +34,12 @@ export class AuthService {
 
   async login(user: UserDocument) {
     const payload = { id: user.id, email: user.email };
+    const refreshToken =
+      await this.jwtTokensService.updateRefreshTokenAndReturn(user.id);
 
     return {
       access_token: this.jwtTokensService.getAccessToken(payload),
-      refresh_token: this.jwtTokensService.getRefreshToken(user.id),
+      refresh_token: refreshToken,
     };
   }
 }
