@@ -1,16 +1,8 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getModelToken } from '@nestjs/mongoose';
 
 import { JwtTokensService } from './jwt-tokens.service';
-import { RefreshToken } from '../schemas/refresh-token.schema';
-
-const mockRepository = {
-  findOneAndUpdate() {
-    return {};
-  },
-};
 
 describe('JwtTokensService', () => {
   let service: JwtTokensService;
@@ -29,13 +21,7 @@ describe('JwtTokensService', () => {
           inject: [ConfigService],
         }),
       ],
-      providers: [
-        JwtTokensService,
-        {
-          provide: getModelToken(RefreshToken.name),
-          useValue: mockRepository,
-        },
-      ],
+      providers: [JwtTokensService],
       exports: [JwtTokensService],
     }).compile();
 
