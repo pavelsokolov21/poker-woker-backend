@@ -1,4 +1,3 @@
-import { JwtService } from '@nestjs/jwt';
 import {
   Injectable,
   NotFoundException,
@@ -6,6 +5,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
+import { JwtTokensService } from '../../jwt-tokens/services/jwt-tokens.service';
 import { UserService } from '../../user/user.service';
 import { UserDocument } from '../../user/schemas/user.schema';
 
@@ -13,7 +13,7 @@ import { UserDocument } from '../../user/schemas/user.schema';
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService,
+    private jwtTokensService: JwtTokensService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -36,7 +36,7 @@ export class AuthService {
     const payload = { id: user.id, email: user.email };
 
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtTokensService.getAccessToken(payload),
       refresh_token: '',
     };
   }

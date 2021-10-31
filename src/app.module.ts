@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { JwtTokensModule } from './modules/jwt-tokens/jwt-tokens.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from './modules/auth/auth.module';
     ),
     UserModule,
     AuthModule,
+    JwtTokensModule,
   ],
   controllers: [AppController],
   providers: [AppService],
