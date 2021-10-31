@@ -8,6 +8,7 @@ import {
   RefreshTokenDocument,
 } from '../schemas/refresh-token.schema';
 import { Model } from 'mongoose';
+import { JwtPayload } from '../../../interfaces/jwtPayload.interface';
 
 @Injectable()
 export class JwtTokensService {
@@ -17,7 +18,7 @@ export class JwtTokensService {
     private refreshTokenModel: Model<RefreshTokenDocument>,
   ) {}
 
-  getAccessToken(payload: Record<string, unknown> | string) {
+  getAccessToken(payload: JwtPayload) {
     // Secret key and exp date have been configured in jwt-tokens.module.ts
     return this.jwtService.sign(payload);
   }
@@ -46,5 +47,15 @@ export class JwtTokensService {
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
+  }
+
+  async generateTokens(payload: JwtPayload) {
+    const accessToken = this.getAccessToken(payload);
+    const refreshToken = await this.updateRefreshTokenAndReturn(payload.id);
+
+    return {
+      accessToken,
+      refreshToken,
+    };
   }
 }

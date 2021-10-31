@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtTokensService } from '../../jwt-tokens/services/jwt-tokens.service';
 import { UserService } from '../../user/user.service';
 import { UserDocument } from '../../user/schemas/user.schema';
+import { JwtPayload } from '../../../interfaces/jwtPayload.interface';
 
 @Injectable()
 export class AuthService {
@@ -33,13 +34,9 @@ export class AuthService {
   }
 
   async login(user: UserDocument) {
-    const payload = { id: user.id, email: user.email };
-    const refreshToken =
-      await this.jwtTokensService.updateRefreshTokenAndReturn(user.id);
+    const payload: JwtPayload = { id: user.id, email: user.email };
+    const tokens = await this.jwtTokensService.generateTokens(payload);
 
-    return {
-      access_token: this.jwtTokensService.getAccessToken(payload),
-      refresh_token: refreshToken,
-    };
+    return tokens;
   }
 }
