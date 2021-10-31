@@ -6,8 +6,8 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { UserService } from '../user/user.service';
-import { UserDocument } from '../user/schemas/user.schema';
+import { UserService } from '../../user/user.service';
+import { UserDocument } from '../../user/schemas/user.schema';
 
 @Injectable()
 export class AuthService {
