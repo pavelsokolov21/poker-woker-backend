@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigService, ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
 
 import { JwtTokensService } from './services/jwt-tokens.service';
-import {
-  RefreshToken,
-  RefreshTokenSchema,
-} from './schemas/refresh-token.schema';
 
 @Module({
   imports: [
@@ -21,17 +16,6 @@ import {
       }),
       inject: [ConfigService],
     }),
-    MongooseModule.forFeatureAsync([
-      {
-        name: RefreshToken.name,
-        useFactory: () => {
-          const schema = RefreshTokenSchema;
-          // eslint-disable-next-line @typescript-eslint/no-var-requires
-          schema.plugin(require('mongoose-unique-validator'));
-          return schema;
-        },
-      },
-    ]),
   ],
   providers: [JwtTokensService],
   exports: [JwtTokensService],
