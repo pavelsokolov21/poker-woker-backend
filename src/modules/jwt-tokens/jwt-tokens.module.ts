@@ -3,7 +3,6 @@ import { ConfigService, ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import { JwtTokensController } from './controllers/jwt-tokens.controller';
 import { JwtTokensService } from './services/jwt-tokens.service';
 import {
   RefreshToken,
@@ -35,7 +34,6 @@ import {
     ]),
   ],
   providers: [JwtTokensService],
-  controllers: [JwtTokensController],
   exports: [JwtTokensService],
 })
 export class JwtTokensModule {}

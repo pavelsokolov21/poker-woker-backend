@@ -1,5 +1,9 @@
 import { JwtService } from '@nestjs/jwt';
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import {
@@ -58,6 +62,4 @@ export class JwtTokensService {
       refreshToken,
     };
   }
-
-  // async validateRefreshToken(token: string) {}
 }
